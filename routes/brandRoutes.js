@@ -56,6 +56,7 @@ router.get("/:wallet", async (req, res) => {
       data: {
         ...brand.toObject(),
         logo: logoFullUrl,
+        uri: mappingBrandUri(brand),
       },
     });
   } catch (err) {
@@ -71,6 +72,25 @@ async function validateBrand(wallet) {
   } catch (err) {
     return false;
   }
+}
+function mappingBrandUri(brand) {
+  const cid = brand.logo?.includes("pinata.cloud/ipfs/")
+    ? brand.logo.split("pinata.cloud/ipfs/")[1]
+    : brand.logo?.startsWith("ipfs://")
+    ? brand.logo.replace("ipfs://", "")
+    : brand.logo;
+
+  return {
+    name: brand.brand_name,
+    description: brand.deskripsi,
+    image: `ipfs://${cid}`,
+    attributes: [
+      {
+        trait_type: "verified",
+        value: "yes",
+      },
+    ],
+  };
 }
 
 module.exports = router;
