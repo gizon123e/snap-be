@@ -30,6 +30,18 @@ router.post("/", upload.single("logo"), async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const brands = await Brand.find({}).lean();
+    res.status(200).json({
+      message: "Berhasil mendapatkan data",
+      data: brands,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 router.get("/:wallet", async (req, res) => {
   try {
     const brand = await Brand.findOne({ wallet: req.params.wallet });

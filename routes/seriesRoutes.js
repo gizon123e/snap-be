@@ -59,6 +59,39 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
+router.get("/museum", async (req, res) => {
+  try {
+    const series = await Series.find({}).lean();
+
+    const data = await Promise.all(
+      series.map(async (s) => {
+        const brand = await Brand.findOne({ wallet: s.wallet }).lean();
+        return {
+          ...s,
+          uri: mappingUri(s, brand?.brand_name || ""),
+        };
+      })
+    );
+
+    // Ambil 1 item unik per seriesId (id)
+    const uniqueSeries = Object.values(
+      data.reduce((acc, item) => {
+        if (!acc[item.id]) {
+          acc[item.id] = item; // Simpan yang pertama ditemukan
+        }
+        return acc;
+      }, {})
+    );
+
+    res.status(200).json({
+      message: "Berhasil mendapatkan data unik per seriesId",
+      data: uniqueSeries,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 router.get("/wallet-collection/:wallet", async (req, res) => {
   try {
     const { wallet } = req.params;
