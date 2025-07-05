@@ -28,7 +28,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     const uri = await uploadToPinata(req.file, series_name);
 
-    const id = nanoid(10);
+    const id = Math.floor(1000000000 + Math.random() * 9000000000); // generates a 10-digit numeric ID
     const seriesArray = [];
 
     for (let i = 0; i < parseInt(max_supply); i++) {

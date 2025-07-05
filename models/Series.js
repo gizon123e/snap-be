@@ -4,7 +4,7 @@ const SeriesSchema = new mongoose.Schema(
   {
     uri: String,
     series_name: { type: String, required: true },
-    id: { type: String, required: true },
+    id: { type: Number, required: true },
     prod_batch: String,
     wallet: { type: String, required: true, ref: "Brand" },
     verify_code: { type: String, required: true, unique: true },
