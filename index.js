@@ -3,9 +3,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const brandRoutes = require("./routes/brandRoutes");
 const seriesRoutes = require("./routes/seriesRoutes");
-
+const cors = require("cors");
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
 // Routes
