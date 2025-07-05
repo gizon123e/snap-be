@@ -17,7 +17,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     const { series_name, max_supply, prod_batch, wallet, description } =
       req.body;
     const brand = await validateBrand(wallet);
-
+    console.log(brand);
     if (!brand) {
       return res.status(400).json({ error: "Wallet not registered yet!" });
     }
@@ -187,8 +187,9 @@ router.post("/mint", async (req, res) => {
 
 async function validateBrand(wallet) {
   try {
+    console.log(wallet);
     const brand = await Brand.exists({ wallet });
-    return !!brand;
+    return brand;
   } catch (err) {
     return false;
   }
