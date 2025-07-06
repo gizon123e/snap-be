@@ -165,7 +165,7 @@ router.post("/mint", async (req, res) => {
     const series = await Series.findOne({
       verify_code: code,
       collector: null,
-    }).lean();
+    });
     if (!series) return res.status(404).json({ error: "Series not found" });
     const brand = await Brand.findOne({ wallet: series.wallet }).lean();
     if (!brand) return res.status(404).json({ error: "Brand not found" });
